@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 
 def df_to_array(df):
-    """
+    '''
     Converts Dataframe to numpy array, extracting the feature names, classes and IDs
     
     :param df: Panda dataframe of features
@@ -27,7 +27,7 @@ def df_to_array(df):
     :class:`list` --  feature names
     :class:`list` --  classes of images
     :class:`list` --  IDs of images
-    """
+    '''
     IDs = list(df['ID'])
     classes = list(df['label'])
     df = df.drop(columns=['ID'])
@@ -36,7 +36,7 @@ def df_to_array(df):
 
 
 def array_to_df(radiomicFeatures3D, feature_names, classes,IDs): #r = radiomics_array object
-    """
+    '''
     Inverse of df_to_array. Converts array back into a dataframe.
     
     :param radiomicFeatures3D: Array containing features, num_features x num_samples
@@ -55,14 +55,14 @@ def array_to_df(radiomicFeatures3D, feature_names, classes,IDs): #r = radiomics_
     :returns
     :class:`DataFrame` -- Panda dataframe of features
 
-    """
+    '''
     df = pd.DataFrame(radiomicFeatures3D, columns=feature_names)
     df.insert(0, 'label', classes)
     df.insert(0, 'ID', IDs)
     return df
 
 def standardize_features(df):
-    """
+    '''
     Normalize features of dataframe
         
     :param df: Panda dataframe of features
@@ -71,7 +71,7 @@ def standardize_features(df):
     :returns
     :class:`DataFrame` -- Standardized Panda dataframe of features
 
-    """
+    '''
     radiomicFeatures3D, feature_names, classes, IDs = df_to_array(df)
     for i in range(np.shape(radiomicFeatures3D)[-1]):
         x = radiomicFeatures3D[:, i]
@@ -84,7 +84,7 @@ def standardize_features(df):
 
 
 def distribution_similarity_KS(dist1, dist2):
-    """
+    '''
     Calculate the Kolmogorov–Smirnov similarity between 2 distributions
 
     :param dist1: numpy array with values that make up distribution 1
@@ -96,13 +96,13 @@ def distribution_similarity_KS(dist1, dist2):
     
     :returns
     :class:`float` -- Kolmogorov–Smirnov similarity
-    """
+    '''
     ks_statistic, _ = ks_2samp(dist1, dist2)
     similarity = 1 - ks_statistic #Normalize
     return similarity
 
 def separate_test(dataset, size_test):
-    """
+    '''
     Separate a test set from dataset
 
     :param dataset: Panda dataframe of features
@@ -115,7 +115,7 @@ def separate_test(dataset, size_test):
     :returns
     :class:`DataFrame` -- Panda dataframe of features for training set
     :class:`DataFrame` -- Panda dataframe of features for test set
-    """
+    '''
     test_ids = []
     for i in range(size_test):
         test_i = random.choice(range(len(dataset['ID'])))
@@ -125,7 +125,7 @@ def separate_test(dataset, size_test):
     return trainset, testset
 
 def load_features(data_path, size_test): 
-    """
+    '''
     Load radiomics features from JSON file and separate train and test set. 
     Requires 3DRadiomicFeatures.json file.
    
@@ -139,7 +139,7 @@ def load_features(data_path, size_test):
     :returns
     :class:`DataFrame` -- Panda dataframe of features for training set
     :class:`DataFrame` -- Panda dataframe of features for test set
-    """
+    '''
     
     #df = pd.read_csv(csv_path, index_col=False)
     file_path = os.path.join(data_path, "3DRadiomicfeatures.json")
@@ -165,7 +165,7 @@ def load_features(data_path, size_test):
 
 
 def load_features_full_dataset(data_path): 
-    """
+    '''
     Load radiomics features from JSON file and return full dataset. 
     Requires 3DRadiomicFeatures.json file.
 
@@ -177,7 +177,7 @@ def load_features_full_dataset(data_path):
     :class:`DataFrame` -- Panda dataframe of features
     :class:`numpy.ndarray` -- Array of features from malignant class
     :class:`numpy.ndarray` -- Array of features from benign class
-    """
+    '''
     #df = pd.read_csv(csv_path, index_col=False)
     file_path = os.path.join(data_path, "3DRadiomicfeatures.json")
     with open(file_path, 'r') as file:
@@ -210,7 +210,7 @@ def load_features_full_dataset(data_path):
 
 
 def load_features_full_dataset_with_IDs(data_path): # Full module and df will be returned
-    """
+    '''
     Load radiomics features from JSON file and return full dataset. 
     Requires 3DRadiomicFeatures.json file.
 
@@ -224,7 +224,7 @@ def load_features_full_dataset_with_IDs(data_path): # Full module and df will be
     :class:`numpy.ndarray` -- Malignant case IDs
     :class:`numpy.ndarray` -- Array of features from benign class (0)
     :class:`numpy.ndarray` -- Benign case IDs
-    """
+    '''
     #df = pd.read_csv(csv_path, index_col=False)
     file_path = os.path.join(data_path, "3DRadiomicfeatures.json")
    
@@ -271,7 +271,7 @@ def load_features_full_dataset_with_IDs(data_path): # Full module and df will be
 
 
 def load_features_full_dataset_patient_wise(data_path): # Full module and df will be returned
-    """
+    '''
     Load radiomics features from JSON file and return full dataset. Checks for unique patient IDs.
     Requires 3DRadiomicFeatures.json file.
 
@@ -287,7 +287,7 @@ def load_features_full_dataset_patient_wise(data_path): # Full module and df wil
     :class:`numpy.ndarray` -- Malignant case IDs
     :class:`numpy.ndarray` -- Array of features from benign class
     :class:`numpy.ndarray` -- Benign case IDs
-    """
+    '''
     #df = pd.read_csv(csv_path, index_col=False)
     file_path = os.path.join(data_path, "3DRadiomicfeatures.json")
     csv_path = os.path.join(data_path, "preprocessed_data.csv")
@@ -352,7 +352,7 @@ def load_features_full_dataset_patient_wise(data_path): # Full module and df wil
 
 
 def read_MedicalNet_features(data_path, csv_path_0, csv_path_1):
-    """
+    '''
     Load radiomics features from JSON file and return full dataset. Checks for unique patient IDs.
     Requires 3DRadiomicFeatures.json file to find case IDs.
 
@@ -371,7 +371,7 @@ def read_MedicalNet_features(data_path, csv_path_0, csv_path_1):
     :class:`numpy.ndarray` -- Array of features from malignant class (1)
     :class:`numpy.ndarray` -- Benign case IDs (0)
     :class:`numpy.ndarray` -- Malignant case IDs (1)
-    """
+    '''
     class_0_feats = np.genfromtxt(csv_path_0, delimiter=',')
     class_1_feats = np.genfromtxt(csv_path_1, delimiter=',')
 
@@ -411,7 +411,7 @@ def read_MedicalNet_features(data_path, csv_path_0, csv_path_1):
 
 
 def read_MedicalNet_features_FID(csv_path_0, csv_path_1):
-    """
+    '''
     Load radiomics features from JSON file and return full dataset. Checks for unique patient IDs.
     Does not require 3DRadiomicFeatures.json file.
 
@@ -426,7 +426,7 @@ def read_MedicalNet_features_FID(csv_path_0, csv_path_1):
     :class:`numpy.ndarray` -- Array of features from benign class (0)
     :class:`numpy.ndarray` -- Array of features from malignant class (1)
 
-    """
+    '''
     class_0_feats = np.genfromtxt(csv_path_0, delimiter=',')
     class_1_feats = np.genfromtxt(csv_path_1, delimiter=',')
 
@@ -647,7 +647,7 @@ def plot_features(df, df_test):
 
 
 def euc_distance_features(dataset1, dataset2):
-    """
+    '''
     Calculate Euclidean distance between features of two datasets
         
     :param dataset1: Array of dataset features of dataset 1
@@ -659,7 +659,7 @@ def euc_distance_features(dataset1, dataset2):
     :returns
     :class:`float` -- Euclidean distance between datasets
 
-    """
+    '''
     e_dist = distance.euclidean(dataset1,dataset2)
     return e_dist
 
